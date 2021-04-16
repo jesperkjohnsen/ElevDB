@@ -1,0 +1,19 @@
+﻿@page "{StudentId:int}"
+@model ElevDB.Pages.Students.StudentDetailModel
+@{
+}
+
+<h2>@Model.Student.FullName();</h2>
+
+
+<div>
+    Id: @Model.Student.StudentId
+</div>
+<div>
+    Fornavn: @Model.Student.FirstName
+</div>
+<div>
+    Efternavn: @Model.Student.LastName
+</div>
+
+<a asp-page="./StudentList" class="btn-primary">Alle studerende</a>
