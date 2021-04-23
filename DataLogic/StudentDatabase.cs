@@ -145,5 +145,16 @@ namespace ElevDB.DataLogic
 
             return students;
         }
+
+        public static Staff Login(string username, string password)
+        {
+            Staff staff = new Staff();
+            MySqlCommand login = new MySqlCommand();
+            login.Connection = sqlConnection;
+            login.CommandText = "";
+
+
+            return staff;
+        }
     }
 }
