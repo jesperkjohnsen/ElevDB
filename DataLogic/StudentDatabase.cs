@@ -203,7 +203,36 @@ namespace ElevDB.DataLogic
             sqlConnection.Close();
 
             return staff;
+        }
 
+        public static List<Staff> GetStaff(string firstName)
+        {
+            List<Staff> allstaff = new List<Staff>();
+
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "Select staffId,firstName,lastName,email from Staff where firstName LIKE @firstName";
+            sqlCommand.Parameters.AddWithValue("@firstName", (firstName + "%"));
+
+            sqlConnection.Open();
+            using (MySqlDataReader rdr = sqlCommand.ExecuteReader())
+            {
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        Staff staff = new Staff();
+                        staff.staffId = rdr.GetInt32(0);
+                        staff.FirstName = rdr.GetString(1);
+                        staff.LastName = rdr.GetString(2);
+                        allstaff.Add(staff);
+                    }
+                }
+
+            }
+            sqlConnection.Close();
+
+            return allstaff;
         }
     }
 }

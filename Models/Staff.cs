@@ -22,5 +22,11 @@ namespace ElevDB.Models
         public string Username { get; set; }
         [MinLength(8),StringLength(255)]
         public string Password { get; set; }
+
+        public string FullName()
+        {
+            string fullName = FirstName + " " + LastName;
+            return fullName;
+        }
     }
 }

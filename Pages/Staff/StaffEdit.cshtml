@@ -1,4 +1,45 @@
-﻿@page
+﻿@page "{staffId:int?}"
 @model ElevDB.Pages.Staff.StaffEditModel
 @{
 }
+<h2>Editing @Model.staff.FullName()</h2>
+
+<form method="post" style="width: 50%">
+    <input type="hidden" asp-for="staff.staffId" />
+    <div class="form-group">
+        <label asp-for="staff.FirstName"></label>
+        <input asp-for="staff.FirstName" class="form-control" />
+        <span class="text-danger" asp-validation-for="staff.FirstName" />
+    </div>
+    <div class="form-group">
+        <label asp-for="staff.LastName"></label>
+        <input asp-for="staff.LastName" class="form-control" />
+        <span class="text-danger" asp-validation-for="staff.LastName" />
+    </div>
+    <div class="form-group">
+        <label asp-for="staff.Email"></label>
+        <input asp-for="staff.Email" class="form-control" />
+        <span class="text-danger" asp-validation-for="staff.Email" />
+    </div>
+    <div class="form-group">
+        <label asp-for="staff.Teacher"></label>
+        <input asp-for="staff.Teacher" class="form-control" />
+        <span class="text-danger" asp-validation-for="staff.Teacher" />
+    </div>
+    <div class="form-group">
+        <label asp-for="staff.Administration"></label>
+        <input asp-for="staff.Administration" class="form-control" />
+        <span class="text-danger" asp-validation-for="staff.Administration" />
+    </div>
+    <div class="form-group">
+        <label asp-for="staff.Username"></label>
+        <input asp-for="staff.Username" class="form-control" />
+        <span class="text-danger" asp-validation-for="staff.Username" />
+    </div>
+    <div class="form-group">
+        <label asp-for="staff.Password"></label>
+        <input asp-for="staff.Password" class="form-control" />
+        <span class="text-danger" asp-validation-for="staff.Password" />
+    </div>
+    <button type="submit" class="btn btn-primary">Gem</button> <a asp-page="./StaffDetail" asp-route-StudentId="@Model.staff.staffId" class="btn btn-danger">Annuller</a>
+</form>

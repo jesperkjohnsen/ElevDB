@@ -14,7 +14,6 @@ namespace ElevDB.Pages.Students
         [BindProperty]
         public Student Student { get; set; }
 
-
         public IActionResult OnGet(int? studentId)
         {
 
@@ -32,6 +31,26 @@ namespace ElevDB.Pages.Students
                 RedirectToPage("./NotFound");
             }
             return Page();
+        }
+
+        public IActionResult OnPost()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            if(Student.StudentId > 0)
+            {
+                StudentDatabase.UpdateStudent(Student);
+            }
+            else
+            {
+                Nextcloud.AddUserToNextcloud(Student.NextcloudUsername, Student.FirstName, Student.LastName, Student.NextcloudOneTimePassword);
+                StudentDatabase.CreateStudent(Student);
+            }
+            TempData["Message"] = "Student saved";
+            return RedirectToPage("./StudentDetail", new { studentId = Student.StudentId });
         }
     }
 }

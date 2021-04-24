@@ -1,5 +1,43 @@
-﻿@page
+﻿@page "{staffId:int}"
 @model ElevDB.Pages.Staff.StaffDetailModel
 @{
 }
 
+<h2>@Model.Staff.FullName()</h2>
+
+<table class="table table-hover table-sm" style="width: 50%">
+    <tr>
+        <td>Id</td>
+        <td>@Model.Staff.staffId</td>
+    </tr>
+    <tr>
+        <td>Fornavn</td>
+        <td>@Model.Staff.FirstName</td>
+    </tr>
+    <tr>
+        <td>Efternavn</td>
+        <td>@Model.Staff.LastName</td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>@Model.Staff.Email</td>
+    </tr>
+    <tr>
+        <td>Underviser</td>
+        <td>@Model.Staff.Teacher</td>
+    </tr>
+    <tr>
+        <td>Administration</td>
+        <td>@Model.Staff.Administration</td>
+    </tr>
+    <tr>
+        <td>Brugernavn</td>
+        <td>@Model.Staff.Username</td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td>@Model.Staff.Password</td>
+    </tr>
+</table>
+
+<a asp-page="./StaffList" class="btn btn-primary">Alle ansatte</a> <a asp-page="./StaffEdit" asp-route-staffId="@Model.Staff.staffId" class="btn btn-primary">Redigér</a>
