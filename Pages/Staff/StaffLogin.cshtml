@@ -1,0 +1,23 @@
+﻿@page
+@model ElevDB.Pages.Staff.StaffLoginModel
+@{
+}
+
+<h2>Login</h2>
+@if(Model.LoginMessage != null)
+            {
+                <div class="alert alert-info">@Model.LoginMessage</div>
+            }
+<form method="post">
+    <div class="form-group">
+        <label asp-for="LoginStaff.Username"></label>
+        <input asp-for="LoginStaff.Username" class="form-control" />
+        <span class="text-danger" asp-validation-for="LoginStaff.Username" />
+    </div>
+    <div class="form-group">
+        <label asp-for="LoginStaff.Password"></label>
+        <input asp-for="LoginStaff.Password" class="form-control" />
+        <span class="text-danger" asp-validation-for="LoginStaff.Password" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>

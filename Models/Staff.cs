@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,5 +8,19 @@ namespace ElevDB.Models
 {
     public class Staff
     {
+        public int staffId;
+
+        [StringLength(255)]
+        public string FirstName { get; set; }
+        [StringLength(255)]
+        public string LastName { get; set; }
+        [StringLength(255)]
+        public string Email { get; set; }
+        public bool Teacher { get; set; }
+        public bool Administration { get; set; }
+        [MinLength(2),StringLength(255)]
+        public string Username { get; set; }
+        [MinLength(8),StringLength(255)]
+        public string Password { get; set; }
     }
 }

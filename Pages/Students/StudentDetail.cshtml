@@ -3,17 +3,52 @@
 @{
 }
 
-<h2>@Model.Student.FullName();</h2>
+<h2>@Model.Student.FullName()</h2>
 
+<table class="table table-hover table-sm" style="width: 50%">
+    <tr>
+        <td>Id</td>
+        <td>@Model.Student.StudentId</td>
+    </tr>
+    <tr>
+        <td>Fornavn</td>
+        <td>@Model.Student.FirstName</td>
+    </tr>
+    <tr>
+        <td>Efternavn</td>
+        <td>@Model.Student.LastName</td>
+    </tr>
+    <tr>
+        <td>Adresse</td>
+        <td>@Model.Student.Address</td>
+    </tr>
+    <tr>
+        <td>By</td>
+        <td>@Model.Student.City</td>
+    </tr>
+    <tr>
+        <td>Post Nr.</td>
+        <td>@Model.Student.Zipcode</td>
+    </tr>
+    <tr>
+        <td>CPR-Nummer</td>
+        <td>@Model.Student.CprNumber</td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>@Model.Student.Email</td>
+    <tr>
+        <td>Tlf. Nr.</td>
+        <td>@Model.Student.PhoneNumber</td>
+    </tr>
+    <tr>
+        <td>Nextcloud Bruger</td>
+        <td>@Model.Student.NextcloudUsername</td>
+    </tr>
+    <tr>
+        <td>Nextcloud Originalpassword</td>
+        <td>@Model.Student.NextcloudOneTimePassword</td>
+    </tr>
+</table>
 
-<div>
-    Id: @Model.Student.StudentId
-</div>
-<div>
-    Fornavn: @Model.Student.FirstName
-</div>
-<div>
-    Efternavn: @Model.Student.LastName
-</div>
-
-<a asp-page="./StudentList" class="btn-primary">Alle studerende</a>
+<a asp-page="./StudentList" class="btn btn-primary">Alle studerende</a> <a asp-page="./StudentEdit" asp-route-StudentId="@Model.Student.StudentId" class="btn btn-primary">Redigér</a>

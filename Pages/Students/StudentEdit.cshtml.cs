@@ -11,19 +11,20 @@ namespace ElevDB.Pages.Students
 {
     public class StudentEditModel : PageModel
     {
+        [BindProperty]
         public Student Student { get; set; }
 
 
         public IActionResult OnGet(int? studentId)
         {
 
-           if (studentId.HasValue)
-           {
-                Student = StudentDatabase.GetStudentById(studentId.Value);
+            if (studentId.HasValue)
+            {
+                 Student = StudentDatabase.GetStudentById(studentId.Value);
             }
             else
             {
-                Student = new Student();
+                 Student = new Student();
             }
 
             if (Student == null)

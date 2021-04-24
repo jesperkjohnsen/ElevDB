@@ -16,10 +16,11 @@ namespace ElevDB.Pages.Students
         public IActionResult OnGet(int studentId)
         {
             Student = StudentDatabase.GetStudentById(studentId);
-            if(Student == null)
+            if(Student == null || studentId == 0)
             {
-                return RedirectToPage("");
+                return RedirectToPage("/Students/StudentList");
             }
+
             return Page();
         }
 

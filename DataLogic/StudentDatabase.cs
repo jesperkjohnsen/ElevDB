@@ -15,7 +15,7 @@ namespace ElevDB.DataLogic
         private static string connUser = Startup.StaticConfig["StudentDatabase:DatabaseUser"];
         private static string connPassword = Startup.StaticConfig["StudentDatabase:DatabasePassword"];
         private static string connDBName = Startup.StaticConfig["StudentDatabase:DatabaseName"];
-        private static string connHost = Startup.StaticConfig["Nextcloud:Values:Host"];
+        private static string connHost = Startup.StaticConfig["StudentDatabase:DatabaseHost"];
         private static int connPort = Int32.Parse(Startup.StaticConfig["StudentDatabase:DatabasePort"]);
 
         // Connection string bygges, ud fra ovenstående parametre, bliver brugt i metoderne for at undgå kode redundans.
@@ -24,6 +24,7 @@ namespace ElevDB.DataLogic
         // MySql connection, åbnes/lukkes i metoderne, de bør altid følge denne rækkefølge: Open, Execute Query, Close.
         // Ved brug af datareader bearbejdes retur objekt inden forbindelsen lukkes (se f.eks. GetStudentById).
         private static MySqlConnection sqlConnection = new MySqlConnection(connectionString);
+        
 
         public static Student GetStudentById(int studentId)
         {
@@ -122,7 +123,8 @@ namespace ElevDB.DataLogic
 
             MySqlCommand sqlCommand = new MySqlCommand();
             sqlCommand.Connection = sqlConnection;
-            sqlCommand.CommandText = "Select StudentId,firstName,lastName,email from Students where firstName like @firstName";
+            sqlCommand.CommandText = "Select StudentId,firstName,lastName,email from Students where firstName LIKE @firstName";
+            sqlCommand.Parameters.AddWithValue("@firstName", (firstName + "%"));
 
             sqlConnection.Open();
             using (MySqlDataReader rdr = sqlCommand.ExecuteReader())
@@ -149,12 +151,59 @@ namespace ElevDB.DataLogic
         public static Staff Login(string username, string password)
         {
             Staff staff = new Staff();
-            MySqlCommand login = new MySqlCommand();
-            login.Connection = sqlConnection;
-            login.CommandText = "";
-
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "Select staffId, teacher, administration from Staff where username = @username AND password = @password";
+            sqlCommand.Parameters.AddWithValue("@username", username);
+            sqlCommand.Parameters.AddWithValue("@password", password);
+            sqlConnection.Open();
+            using (MySqlDataReader rdr = sqlCommand.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                        staff.staffId = rdr.GetInt32(0);
+                        staff.Teacher = rdr.GetBoolean(1);
+                        staff.Administration = rdr.GetBoolean(2);
+                        staff.Username = username;
+                        staff.Password = password;
+                }
+            }
+            sqlConnection.Close();
 
             return staff;
+        }
+
+        public static Staff GetStaffById(int staffId)
+        {
+            Staff staff = new Staff();
+
+            MySqlCommand sqlCommand = new MySqlCommand(); // NB, nedenstående kunne godt forkortes ned til at foregå ved oprettelsen, men undertegnede mener at efterfølgende opbygning giver bedre overblik)
+            sqlCommand.CommandText = "Select firstName, lastName, email, teacher, administration, username from Staff where staffId = @staffId";
+            sqlCommand.Parameters.AddWithValue("@staffId", staffId); // Parameters.AddWithValue er en indbygget funktion til at hjælpe med at undgå at blive offer for SQL injection. 
+            sqlCommand.Connection = sqlConnection;
+
+            sqlConnection.Open();
+            using (MySqlDataReader rdr = sqlCommand.ExecuteReader())
+            {
+
+                if (rdr.HasRows) // Hvis der kommer noget data ved søgning sættes det på objektet
+                {
+                    while (rdr.Read())
+                    {// Værdien i parentes ved rdr.GetString stemmer overens med rækkefølgen i kommandoens select statement.
+                        staff.staffId = staffId;
+                        staff.FirstName = rdr.GetString(0);
+                        staff.LastName = rdr.GetString(1);
+                        staff.Email = rdr.GetString(2);
+                        staff.Teacher = rdr.GetBoolean(3);
+                        staff.Administration = rdr.GetBoolean(4);
+                        staff.Username = rdr.GetString(5);
+                    }
+                }
+            }
+            sqlConnection.Close();
+
+            return staff;
+
         }
     }
 }
