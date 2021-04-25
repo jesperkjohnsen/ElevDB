@@ -97,7 +97,6 @@ namespace ElevDB.DataLogic
             sqlCommand.Parameters.AddWithValue("@cprNumber", student.CprNumber);
             sqlCommand.Parameters.AddWithValue("@email", student.Email);
             sqlCommand.Parameters.AddWithValue("@phoneNumber", student.PhoneNumber);
-            sqlCommand.Parameters.AddWithValue("@studentId", student.StudentId);
             sqlCommand.Connection = sqlConnection;
 
             sqlConnection.Open();
@@ -234,5 +233,139 @@ namespace ElevDB.DataLogic
 
             return allstaff;
         }
+
+
+        public static void UpdateStaff(Staff staff)
+        {
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.CommandText = "UPDATE Staff SET firstName = @firstName, lastName = @lastName, email = @email, teacher = @teacher," +
+                " administration = @administration, username = @username, password = @password where staffId = @staffId";
+            sqlCommand.Parameters.AddWithValue("@firstName", staff.FirstName);
+            sqlCommand.Parameters.AddWithValue("@lastName", staff.LastName);
+            sqlCommand.Parameters.AddWithValue("@email", staff.Email);
+            sqlCommand.Parameters.AddWithValue("@teacher", staff.Teacher);
+            sqlCommand.Parameters.AddWithValue("@administration", staff.Administration);
+            sqlCommand.Parameters.AddWithValue("@username", staff.Username);
+            sqlCommand.Parameters.AddWithValue("@password", staff.Password);
+            sqlCommand.Parameters.AddWithValue("@staffId", staff.staffId);
+            sqlCommand.Connection = sqlConnection;
+
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public static void CreateStaff(Staff staff)
+        {
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.CommandText = "INSERT INTO Students (firstName,lastName,email,teacher,administration,username,password) VALUES(" +
+                "@firstName,@lastName,@email,@teacher,@administration,@username,@password)";
+            sqlCommand.Parameters.AddWithValue("@firstName", staff.FirstName);
+            sqlCommand.Parameters.AddWithValue("@lastName", staff.LastName);
+            sqlCommand.Parameters.AddWithValue("@email", staff.Email);
+            sqlCommand.Parameters.AddWithValue("@teacher", staff.Teacher);
+            sqlCommand.Parameters.AddWithValue("@administration", staff.Administration);
+            sqlCommand.Parameters.AddWithValue("@username", staff.Username);
+            sqlCommand.Parameters.AddWithValue("@password", staff.Password);
+            sqlCommand.Connection = sqlConnection;
+
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public static void DeleteStaff(Staff staff)
+        {
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "DELETE FROM Staff where staffId = @staffId";
+            sqlCommand.Parameters.AddWithValue("@staffId", staff.staffId);
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+
+        public static Subject GetSubjectById(int subjectId)
+        {
+            Subject subject = new Subject();
+
+            MySqlCommand sqlCommand = new MySqlCommand(); // NB, nedenstående kunne godt forkortes ned til at foregå ved oprettelsen, men undertegnede mener at efterfølgende opbygning giver bedre overblik)
+            sqlCommand.CommandText = "Select subjectName from Subjects where subjectId = @subjectId";
+            sqlCommand.Parameters.AddWithValue("@subjectId", subjectId); // Parameters.AddWithValue er en indbygget funktion til at hjælpe med at undgå at blive offer for SQL injection. 
+            sqlCommand.Connection = sqlConnection;
+
+            sqlConnection.Open();
+            using (MySqlDataReader rdr = sqlCommand.ExecuteReader())
+            {
+
+                if (rdr.HasRows) // Hvis der kommer noget data ved søgning sættes det på objektet
+                {
+                    while (rdr.Read())
+                    {// Værdien i parentes ved rdr.GetString stemmer overens med rækkefølgen i kommandoens select statement.
+                        subject.SubjectId = subjectId;
+                        subject.SubjectName= rdr.GetString(0);
+                    }
+                }
+            }
+            sqlConnection.Close();
+
+            return subject;
+        }
+
+        public static void UpdateSubject(Subject subject)
+        {
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.CommandText = "UPDATE Staff SET subjectName = @subjectName where subjectId = @subjectId";
+            sqlCommand.Parameters.AddWithValue("@subjectName", subject.SubjectName);
+            sqlCommand.Parameters.AddWithValue("@subjectId", subject.SubjectId);
+            sqlCommand.Connection = sqlConnection;
+
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public static void CreateSubject(Subject subject)
+        {
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.CommandText = "INSERT INTO Subjects (subjectName) VALUES(@subjectName)";
+            sqlCommand.Parameters.AddWithValue("@subjectName", subject.SubjectName);
+            sqlCommand.Connection = sqlConnection;
+
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public static List<Subject> GetSubjects(string subjectName)
+        {
+            List<Subject> allsubjects = new List<Subject>();
+
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "Select subjectId,subjectName from Subjects where subjectName LIKE @subjectName";
+            sqlCommand.Parameters.AddWithValue("@subjectName", (subjectName + "%"));
+
+            sqlConnection.Open();
+            using (MySqlDataReader rdr = sqlCommand.ExecuteReader())
+            {
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        Subject subject = new Subject();
+                        subject.SubjectId = rdr.GetInt32(0);
+                        subject.SubjectName = rdr.GetString(1);
+                        allsubjects.Add(subject);
+                    }
+                }
+
+            }
+            sqlConnection.Close();
+
+            return allsubjects;
+        }
+
     }
 }

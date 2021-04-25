@@ -1,0 +1,39 @@
+﻿@page
+@model ElevDB.Pages.Subjects.SubjectListModel
+@{
+}
+<h1>Fag</h1>
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="search" class="form-control"
+                   asp-for="SearchTerm" />
+            <span class="input-group-append">
+                <button class="btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    @foreach (var subject in Model.Subjects)
+    {
+        <tr>
+            <td>@subject.SubjectName</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./SubjectDetail"
+                   asp-route-StudentId="@subject.SubjectId">
+                    <i class="fas fa-search-plus"></i>
+                </a>
+                <a class="btn btn-lg" asp-page="./SubjectEdit"
+                   asp-route-StudentId="@subject.SubjectId">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+<a asp-page=".\StudentEdit" class="btn btn-primary">Add New</a>

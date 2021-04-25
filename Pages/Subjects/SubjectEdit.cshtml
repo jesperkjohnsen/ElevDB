@@ -1,0 +1,13 @@
+﻿@page "{subjectId:int?}"
+@model ElevDB.Pages.Subjects.SubjectEditModel
+@{
+}
+
+<form method="post" style="width: 50%">
+    <input type="hidden" asp-for="Subject.SubjectId" />
+    <div class="form-group">
+        <label asp-for="Subject.SubjectName"></label>
+        <input asp-for="Subject.SubjectName" class="form-control" />
+        <span class="text-danger" asp-validation-for="Subject.SubjectName" />
+    </div>
+</form>

@@ -48,7 +48,7 @@
         <span class="text-danger" asp-validation-for="Student.PhoneNumber" />
     </div>
     <div class="form-group" >
-<       label asp-for="Student.NextcloudUsername"></label>
+        <label asp-for="Student.NextcloudUsername"></label>
         <input asp-for="Student.NextcloudUsername" class="form-control" />
         <span class="text-danger" asp-validation-for="Student.NextcloudUsername" />
     </div>
@@ -57,7 +57,5 @@
         <input asp-for="Student.NextcloudOneTimePassword" class="form-control"/>
         <span class="text-danger" asp-validation-for="Student.NextcloudOneTimePassword" />
     </div>
-    }
-
     <button type="submit" class="btn btn-primary">Gem</button> <a asp-page="./StudentDetail" asp-route-StudentId="@Model.Student.StudentId" class="btn btn-danger">Annuller</a>
 </form>

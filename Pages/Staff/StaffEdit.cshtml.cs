@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ElevDB.DataLogic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -15,21 +16,47 @@ namespace ElevDB.Pages.Staff
 
         public IActionResult OnGet(int? staffId)
         {
-
-            if (staffId.HasValue)
+            if (HttpContext.Session.GetString("Administration") == "TRUE")
             {
-                staff = StudentDatabase.GetStaffById(staffId.Value);
+                if (staffId.HasValue)
+                {
+                    staff = StudentDatabase.GetStaffById(staffId.Value);
+                }
+                else
+                {
+                    staff = new Models.Staff();
+                }
+
+                if (staff == null)
+                {
+                    return RedirectToPage("./NotFound");
+                }
+                return Page();
             }
             else
             {
-                staff = new Models.Staff();
+                return RedirectToPage("./StaffLogin");
+            }            
+        }
+
+        public IActionResult OnPost()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
             }
 
-            if (staff == null)
+            if (staff.staffId > 0)
             {
-                RedirectToPage("./NotFound");
+                // update staff
             }
-            return Page();
+            else
+            {
+                // create staff
+            }
+            TempData["Message"] = "Staff saved";
+            return RedirectToPage("./StaffDetail", new { staffId = staff.staffId });
         }
+
     }
 }
