@@ -87,8 +87,8 @@ namespace ElevDB.DataLogic
         public static void CreateStudent(Student student)
         {
             MySqlCommand sqlCommand = new MySqlCommand();
-            sqlCommand.CommandText = "INSERT INTO Students (firstName,lastName,address,zipCode,city,cprNumber,email,phoneNumber) VALUES(" +
-                "@firstName,@lastName,@address,@zipCode,@city,@cprNumber,@email,@phoneNumber)";
+            sqlCommand.CommandText = "INSERT INTO Students (firstName,lastName,address,zipCode,city,cprNumber,email,phoneNumber,nextcloudUsername,nextcloudOneTimePassword) VALUES(" +
+                "@firstName,@lastName,@address,@zipCode,@city,@cprNumber,@email,@phoneNumber,@nextcloudUsername,@nextcloudOneTimePassword)";
             sqlCommand.Parameters.AddWithValue("@firstName", student.FirstName);
             sqlCommand.Parameters.AddWithValue("@lastName", student.LastName);
             sqlCommand.Parameters.AddWithValue("@address", student.Address);
@@ -97,6 +97,8 @@ namespace ElevDB.DataLogic
             sqlCommand.Parameters.AddWithValue("@cprNumber", student.CprNumber);
             sqlCommand.Parameters.AddWithValue("@email", student.Email);
             sqlCommand.Parameters.AddWithValue("@phoneNumber", student.PhoneNumber);
+            sqlCommand.Parameters.AddWithValue("@nextcloudUsername", student.NextcloudUsername);
+            sqlCommand.Parameters.AddWithValue("@nextcloudOneTimePassword", student.NextcloudOneTimePassword);
             sqlCommand.Connection = sqlConnection;
 
             sqlConnection.Open();
@@ -365,6 +367,113 @@ namespace ElevDB.DataLogic
             sqlConnection.Close();
 
             return allsubjects;
+        }
+
+        public static List<Subject> GetAllSubjects()
+        {
+            List<Subject> allsubjects = new List<Subject>();
+
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "Select subjectId,subjectName from Subjects";
+
+            sqlConnection.Open();
+            using (MySqlDataReader rdr = sqlCommand.ExecuteReader())
+            {
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        Subject subject = new Subject();
+                        subject.SubjectId = rdr.GetInt32(0);
+                        subject.SubjectName = rdr.GetString(1);
+                        allsubjects.Add(subject);
+                    }
+                }
+
+            }
+            sqlConnection.Close();
+
+            return allsubjects;
+        }
+
+        public static void DeleteGrade(int gradeId)
+        {
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "DELETE FROM Grades where gradeId = @gradeId";
+            sqlCommand.Parameters.AddWithValue("@gradeId", gradeId);
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public static void AddGrade(Grade grade)
+        {
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "INSERT INTO Grades (studentId,subjectId,gradeValue,gradeDate) VALUES(@studentId,@subjectId,@gradeValue,@gradeDate)";
+            sqlCommand.Parameters.AddWithValue("@subjectId",grade.SubjectId);
+            sqlCommand.Parameters.AddWithValue("@studentId", grade.StudentId);
+            sqlCommand.Parameters.AddWithValue("@gradeValue", grade.GradeValue);
+            sqlCommand.Parameters.AddWithValue("@gradeDate", grade.GradeDate);
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public static List<Grade> GetGrades(int studentId)
+        {
+            List<Grade> allGrades = new List<Grade>();
+
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "select gradeId, subjectId, gradeValue, gradeDate from Grades where studentId = @studentId";
+            sqlCommand.Parameters.AddWithValue("@studentId", studentId);
+
+            sqlConnection.Open();
+            using(MySqlDataReader rdr = sqlCommand.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    Grade grade = new Grade();
+                    grade.GradeId = rdr.GetInt32(0);
+                    grade.SubjectId = rdr.GetInt32(1);
+                    grade.StudentId = studentId;
+                    grade.GradeValue = rdr.GetString(2);
+                    grade.GradeDate = rdr.GetDateTime(3);
+
+                    allGrades.Add(grade);
+                }
+            }
+            sqlConnection.Close();
+            return allGrades;
+        }
+
+        public static Grade GetGradeById(int gradeId)
+        {
+            Grade grade = new Grade();
+
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "select subjectId, studentId, gradeValue, gradeDate from Grades where gradeId = @gradeId";
+            sqlCommand.Parameters.AddWithValue("@gradeId", grade.GradeId);
+            
+            
+            sqlConnection.Open();
+            using (MySqlDataReader rdr = sqlCommand.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    grade.GradeId = gradeId;
+                    grade.SubjectId = rdr.GetInt32(0); 
+                    grade.StudentId = rdr.GetInt32(1);
+                    grade.GradeValue = rdr.GetString(2);
+                    grade.GradeDate = rdr.GetDateTime(3);
+                }
+            }
+            sqlConnection.Close();
+            return grade;
         }
 
     }

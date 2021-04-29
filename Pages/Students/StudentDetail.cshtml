@@ -51,4 +51,7 @@
     </tr>
 </table>
 
-<a asp-page="./StudentList" class="btn btn-primary">Alle studerende</a> <a asp-page="./StudentEdit" asp-route-StudentId="@Model.Student.StudentId" class="btn btn-primary">Redigér</a> <a asp-page="./StudentList" class="btn btn-danger">Slet</a>
+<a asp-page="./StudentList" class="btn btn-primary">Alle studerende</a> <a asp-page="./StudentEdit" asp-route-StudentId="@Model.Student.StudentId" class="btn btn-primary">Redigér</a> <a asp-page="/Grades/GradeList" asp-route-StudentId="@Model.Student.StudentId" class="btn btn-primary">Karakterer</a>
+<form asp-page-handler="delete" method="post">
+    <button class="btn btn-danger">Slet</button>
+</form>

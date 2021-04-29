@@ -48,11 +48,11 @@ namespace ElevDB.Pages.Staff
 
             if (staff.staffId > 0)
             {
-                // update staff
+                StudentDatabase.UpdateStaff(staff);
             }
             else
             {
-                // create staff
+                StudentDatabase.CreateStaff(staff);
             }
             TempData["Message"] = "Staff saved";
             return RedirectToPage("./StaffDetail", new { staffId = staff.staffId });

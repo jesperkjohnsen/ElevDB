@@ -10,4 +10,5 @@
         <input asp-for="Subject.SubjectName" class="form-control" />
         <span class="text-danger" asp-validation-for="Subject.SubjectName" />
     </div>
+    <button type="submit" class="btn btn-primary">Gem</button> <a asp-page="./StudentDetail" asp-route-StudentId="@Model.Subject.SubjectId" class="btn btn-danger">Annuller</a>
 </form>

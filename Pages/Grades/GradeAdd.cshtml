@@ -1,0 +1,25 @@
+﻿@page "{studentId:int}"
+@model ElevDB.Pages.Grades.GradeAddModel
+@{
+}
+
+<form method="post" style="width: 50%">
+    <input type="hidden" asp-for="Grade.GradeId" />
+    <input type="hidden" asp-for="Grade.StudentId" />
+    <div class="form-group">
+        <label asp-for="Grade.GradeDate"></label>
+        <input asp-for="Grade.GradeDate" class="form-control" />
+        <span class="text-danger" asp-validation-for="Grade.GradeDate" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Grade.GradeValue"></label>
+        <input asp-for="Grade.GradeValue" class="form-control" />
+        <span class="text-danger" asp-validation-for="Grade.GradeValue" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Grade.SubjectId"></label>
+        <select class="form-control" asp-for="Grade.SubjectId" asp-items="Model.SubjectList"></select>
+        <span class="text-danger" asp-validation-for="Grade.SubjectId"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Gem</button> <a asp-page="./GradeList" asp-route-studentId="@Model.Grade.StudentId" class="btn btn-danger">Annuller</a>
+</form>

@@ -2,3 +2,15 @@
 @model ElevDB.Pages.Subjects.SubjectDetailModel
 @{
 }
+<table class="table table-hover table-sm" style="width: 50%">
+    <tr>
+        <td>Id</td>
+        <td>@Model.Subject.SubjectId</td>
+    </tr>
+    <tr>
+        <td>Fag</td>
+        <td>@Model.Subject.SubjectName</td>
+    </tr>   
+</table>
+
+<a asp-page="./SubjectList" class="btn btn-primary">Alle fag</a> <a asp-page="./SubjectEdit" asp-route-StudentId="@Model.Subject.SubjectId" class="btn btn-primary">Redigér</a>

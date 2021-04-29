@@ -1,0 +1,23 @@
+﻿@page "{studentId:int}"
+@model ElevDB.Pages.Grades.GradeListModel
+@{
+}
+
+<h2>@Model.Student.FullName() - Karakterer</h2>
+<table class="table" width="50%">
+    @foreach (var grade in Model.Grades)
+    {
+        <tr>
+            <td>@grade.GradeId</td>
+            <td>@grade.GradeDate.Date<td>
+            <td>@grade.GradeValue</td>
+            <td>
+                <a class="btn btn-lg" asp-page="./GradeEdit"
+                   asp-route-gradeId="@grade.GradeId">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+<a asp-page=".\GradeAdd" asp-route-studentId="@Model.Student.StudentId" class="btn btn-primary">Tilføj ny</a>

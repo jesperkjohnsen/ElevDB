@@ -18,7 +18,9 @@ namespace ElevDB.Pages.Subjects
 
         public void OnGet()
         {
-            StudentDatabase.GetSubjects(SearchTerm);
+            Subjects = StudentDatabase.GetSubjects(SearchTerm);
+            
         }
     }
 }
+ 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ElevDB.Models;
 using ElevDB.DataLogic;
+using Microsoft.AspNetCore.Http;
 
 namespace ElevDB.Pages.Students
 {
@@ -15,15 +16,28 @@ namespace ElevDB.Pages.Students
 
         public IActionResult OnGet(int studentId)
         {
-            Student = StudentDatabase.GetStudentById(studentId);
-            if(Student == null || studentId == 0)
+            
+            if (HttpContext.Session.GetString("Administration") == "TRUE" || HttpContext.Session.GetString("Teacher") == "TRUE")
             {
-                return RedirectToPage("/Students/StudentList");
+                Student = StudentDatabase.GetStudentById(studentId);
+                if (Student == null || studentId == 0)
+                {
+                    return RedirectToPage("/Students/StudentList");
+                }
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage("/Staff/StaffLogin");
             }
 
-            return Page();
         }
 
+        public void OnPostDelete(Student student)
+        {
+            StudentDatabase.DeleteStudent(student);
+            RedirectToPage("/Students/StudentList");
+        }
 
     }
 }

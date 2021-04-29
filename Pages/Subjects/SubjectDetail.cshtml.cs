@@ -18,7 +18,7 @@ namespace ElevDB.Pages.Subjects
             Subject = StudentDatabase.GetSubjectById(SubjectId);
             if (Subject == null || SubjectId == 0)
             {
-                return RedirectToPage("/Students/StudentList");
+                return RedirectToPage("/Subjects/SubjectList");
             }
             return Page();
         }

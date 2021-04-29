@@ -16,14 +16,18 @@ namespace ElevDB.Pages.Staff
 
         public IEnumerable<Models.Staff> AllStaff { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            if (HttpContext.Session.GetString("Administration") != "TRUE")
-            {
-                RedirectToPage("./StaffLogin");
-            }
 
-            AllStaff = StudentDatabase.GetStaff(SearchTerm);
+            if (HttpContext.Session.GetString("Administration") == "TRUE")
+            {
+                AllStaff = StudentDatabase.GetStaff(SearchTerm);
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage("./StaffLogin");
+            }            
         }
     }
 }

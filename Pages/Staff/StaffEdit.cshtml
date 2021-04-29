@@ -41,5 +41,5 @@
         <input asp-for="staff.Password" class="form-control" />
         <span class="text-danger" asp-validation-for="staff.Password" />
     </div>
-    <button type="submit" class="btn btn-primary">Gem</button> <a asp-page="./StaffDetail" asp-route-StudentId="@Model.staff.staffId" class="btn btn-danger">Annuller</a>
+    <button type="submit" class="btn btn-primary">Gem</button> <a asp-page="./StaffDetail" asp-route-staffId="@Model.staff.staffId" class="btn btn-danger">Annuller</a>
 </form>
