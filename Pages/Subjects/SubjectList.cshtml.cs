@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ElevDB.DataLogic;
 using ElevDB.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace ElevDB.Pages.Subjects
 {
@@ -16,9 +17,18 @@ namespace ElevDB.Pages.Subjects
 
         public IEnumerable<Subject> Subjects { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            Subjects = StudentDatabase.GetSubjects(SearchTerm);
+            if (HttpContext.Session.GetString("Administration") == "TRUE")
+            {
+                Subjects = StudentDatabase.GetSubjects(SearchTerm);
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage("./StaffLogin");
+            }
+            
             
         }
     }

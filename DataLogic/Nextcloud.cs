@@ -18,7 +18,7 @@ namespace ElevDB.DataLogic
         private static int connPort = Int32.Parse(Startup.StaticConfig["Nextcloud:Values:DatabasePort"]);
         
         // Connection string bygges, er ude fra den enkelte metode så man senere ville kunne udvide med andre metoder (kunne f.eks. være en password reset funktion eller andet), uden at deklarere den flere gange.
-        private static string connectionString = $"Persist Security Info=False;database={connDBName};server={connHost};Connect Timeout=30;user id={connUser};pwd={connPassword}";
+        private static string connectionString = $"Persist Security Info=False;database={connDBName};server={connHost};port={connPort};Connect Timeout=30;user id={connUser};pwd={connPassword}";
 
         // MySql connection, åbnes/lukkes i metoden. 
         private static MySqlConnection sqlConnection = new MySqlConnection(connectionString);

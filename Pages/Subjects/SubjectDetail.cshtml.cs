@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ElevDB.DataLogic;
 using ElevDB.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -15,12 +16,21 @@ namespace ElevDB.Pages.Subjects
 
         public IActionResult OnGet(int SubjectId)
         {
-            Subject = StudentDatabase.GetSubjectById(SubjectId);
-            if (Subject == null || SubjectId == 0)
+            if (HttpContext.Session.GetString("Administration") == "TRUE")
             {
-                return RedirectToPage("/Subjects/SubjectList");
+                Subject = StudentDatabase.GetSubjectById(SubjectId);
+                if (Subject == null || SubjectId == 0)
+                {
+                    return RedirectToPage("/Subjects/SubjectList");
+                }
+                return Page();
             }
-            return Page();
+            else
+            {
+                return RedirectToPage("./StaffLogin");
+            }
+
+
         }
     }
 }

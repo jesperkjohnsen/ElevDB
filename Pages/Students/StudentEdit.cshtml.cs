@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ElevDB.DataLogic;
 using ElevDB.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -17,20 +18,29 @@ namespace ElevDB.Pages.Students
         public IActionResult OnGet(int? studentId)
         {
 
-            if (studentId.HasValue)
+            if (HttpContext.Session.GetString("Administration") == "TRUE")
             {
-                 Student = StudentDatabase.GetStudentById(studentId.Value);
+                if (studentId.HasValue)
+                {
+                    Student = StudentDatabase.GetStudentById(studentId.Value);
+                }
+                else
+                {
+                    Student = new Student();
+                }
+
+                if (Student == null)
+                {
+                    RedirectToPage("/NotFound");
+                }
+
+                return Page();
             }
             else
             {
-                 Student = new Student();
+                return RedirectToPage("./StaffLogin");
             }
 
-            if (Student == null)
-            {
-                RedirectToPage("./NotFound");
-            }
-            return Page();
         }
 
         public IActionResult OnPost()

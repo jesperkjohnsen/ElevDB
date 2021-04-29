@@ -19,7 +19,7 @@ namespace ElevDB.DataLogic
         private static int connPort = Int32.Parse(Startup.StaticConfig["StudentDatabase:DatabasePort"]);
 
         // Connection string bygges, ud fra ovenstående parametre, bliver brugt i metoderne for at undgå kode redundans.
-        private static string connectionString = $"Persist Security Info=False;database={connDBName};server={connHost};Connect Timeout=30;user id={connUser};pwd={connPassword}";
+        private static string connectionString = $"Persist Security Info=False;database={connDBName};server={connHost};port={connPort};Connect Timeout=30;user id={connUser};pwd={connPassword}";
 
         // MySql connection, åbnes/lukkes i metoderne, de bør altid følge denne rækkefølge: Open, Execute Query, Close.
         // Ved brug af datareader bearbejdes retur objekt inden forbindelsen lukkes (se f.eks. GetStudentById).

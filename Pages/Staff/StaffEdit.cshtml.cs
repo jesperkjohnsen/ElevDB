@@ -29,7 +29,7 @@ namespace ElevDB.Pages.Staff
 
                 if (staff == null)
                 {
-                    return RedirectToPage("./NotFound");
+                    return RedirectToPage("/NotFound");
                 }
                 return Page();
             }
