@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
 namespace ElevDB.DataLogic
 {
     public static class Nextcloud
     {
-        public static PasswordHasher pwdHasher = new PasswordHasher();
+        public static PasswordHasher pwdHasher = new PasswordHasher(); // Der oprettes et password hasher objekt som bruges til at hashe passwordet. 
 
         // Connection string information to nextcloud
         private static string connUser = Startup.StaticConfig["Nextcloud:Values:DatabaseUser"];
@@ -25,10 +22,10 @@ namespace ElevDB.DataLogic
 
         public static void AddUserToNextcloud(string username,string firstName, string lastName, string password)
         {
-            var hashedPassword = pwdHasher.HashPasswordForSQL(password);
-            var fullName = firstName + " " + lastName;
+            var hashedPassword = pwdHasher.HashPasswordForSQL(password); // Passwordhasheren kaldes så password kan læses af nextcloud.
+            var fullName = firstName + " " + lastName; // firstName og lastName sættes sammen til at blive brugt til display name i nextcloud.
 
-            MySqlCommand sqlCommand = new MySqlCommand();
+            MySqlCommand sqlCommand = new MySqlCommand(); // Der anvendes parameters.AddWithValue til at forebygge SQL injection.
             sqlCommand.CommandText = "INSERT into oc_users (uid,displayname,password,uid_lower) VALUES(@username,@displayname,@password,@username_lower)";
             sqlCommand.Parameters.AddWithValue("@username",username);
             sqlCommand.Parameters.AddWithValue("@displayname", fullName);

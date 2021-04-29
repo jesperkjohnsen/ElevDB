@@ -1,8 +1,6 @@
 ﻿using ElevDB.DataLogic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ElevDB.Models
 {
@@ -11,7 +9,9 @@ namespace ElevDB.Models
         public int GradeId { get; set; }
         public int StudentId { get; set; }
         public int SubjectId { get; set; }
+        [Required,StringLength(5)]
         public string GradeValue { get; set; }
+        [Required]
         public DateTime GradeDate { get; set; }
     }
 }

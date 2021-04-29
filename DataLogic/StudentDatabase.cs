@@ -12,6 +12,7 @@ namespace ElevDB.DataLogic
 
 
         // Connection string information to student database
+        // Info læses fra appsettings.json
         private static string connUser = Startup.StaticConfig["StudentDatabase:DatabaseUser"];
         private static string connPassword = Startup.StaticConfig["StudentDatabase:DatabasePassword"];
         private static string connDBName = Startup.StaticConfig["StudentDatabase:DatabaseName"];
@@ -28,7 +29,7 @@ namespace ElevDB.DataLogic
 
         public static Student GetStudentById(int studentId)
         {
-            Student student = new Student(); // Vi opretter den student som returneres til sidst og bruges af siden/siderne.
+            Student student = new Student(); // Der oprettes den student som returneres til sidst og bruges af siden/siderne.
 
             // Kommandoen oprettes, og henter alt student data (bortset fra studentId da denne haves i forvejen).
             MySqlCommand sqlCommand = new MySqlCommand(); // NB, nedenstående kunne godt forkortes ned til at foregå ved oprettelsen, men undertegnede mener at efterfølgende opbygning giver bedre overblik)
@@ -475,6 +476,5 @@ namespace ElevDB.DataLogic
             sqlConnection.Close();
             return grade;
         }
-
     }
 }
