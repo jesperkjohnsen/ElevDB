@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ElevDB.Models;
 using ElevDB.DataLogic;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +18,12 @@ namespace ElevDB.Pages.Grades
 
         public IActionResult OnGet(int studentId)
         {
-            if (HttpContext.Session.GetString("Administration") == "TRUE")
+            if (HttpContext.Session.GetString("Administration") == "TRUE") // Login tjek
             {
 
-                Grades = StudentDatabase.GetGrades(studentId);
-                Student = StudentDatabase.GetStudentById(studentId);
-                Subjects = StudentDatabase.GetAllSubjects();
+                Grades = StudentDatabase.GetGrades(studentId); // Alle karakterer der er tilknyttet en given studerende hentes
+                Student = StudentDatabase.GetStudentById(studentId); // Den gældende studerende hentes.
+                Subjects = StudentDatabase.GetAllSubjects(); // Alle fag hentes
                 var subjectList = new SelectList(Subjects, "SubjectId", "SubjectName");
                 SubjectList = subjectList;
 

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ElevDB.DataLogic;
 using ElevDB.Models;
 using Microsoft.AspNetCore.Http;
@@ -16,10 +12,10 @@ namespace ElevDB.Pages.Subjects
 
         public IActionResult OnGet(int SubjectId)
         {
-            if (HttpContext.Session.GetString("Administration") == "TRUE")
+            if (HttpContext.Session.GetString("Administration") == "TRUE") // Login tjek
             {
                 Subject = StudentDatabase.GetSubjectById(SubjectId);
-                if (Subject == null || SubjectId == 0)
+                if (Subject == null || SubjectId == 0) // Hvis subject er null er Id er 0 redirect til subjectlist
                 {
                     return RedirectToPage("/Subjects/SubjectList");
                 }
@@ -29,8 +25,6 @@ namespace ElevDB.Pages.Subjects
             {
                 return RedirectToPage("./StaffLogin");
             }
-
-
         }
     }
 }

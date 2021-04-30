@@ -13,21 +13,19 @@ namespace ElevDB.Pages.Staff
     {
         [BindProperty]
         public Models.Staff staff { get; set; }
-
         public IActionResult OnGet(int? staffId)
         {
-            if (HttpContext.Session.GetString("Administration") == "TRUE")
+            if (HttpContext.Session.GetString("Administration") == "TRUE") // Der foretages login tjek
             {
-                if (staffId.HasValue)
+                if (staffId.HasValue) // Hvis der koms staffId med hentes staff fra StudentDB
                 {
                     staff = StudentDatabase.GetStaffById(staffId.Value);
                 }
-                else
+                else // Hvis ikke oprettes et nyt staff objekt
                 {
                     staff = new Models.Staff();
                 }
-
-                if (staff == null)
+                if (staff == null) // Hvis staff er null på dette tidspunkt sendes man til notfound siden.
                 {
                     return RedirectToPage("/NotFound");
                 }
@@ -38,7 +36,6 @@ namespace ElevDB.Pages.Staff
                 return RedirectToPage("./StaffLogin");
             }            
         }
-
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
@@ -46,17 +43,16 @@ namespace ElevDB.Pages.Staff
                 return Page();
             }
 
-            if (staff.staffId > 0)
+            if (staff.staffId > 0) // Hvis staffId er højere end 0 er der tale om at en ansat skal opdateres
             {
                 StudentDatabase.UpdateStaff(staff);
             }
-            else
+            else // Ellers oprettes en ny ansat i databasen.
             {
                 StudentDatabase.CreateStaff(staff);
             }
             TempData["Message"] = "Staff saved";
             return RedirectToPage("./StaffDetail", new { staffId = staff.staffId });
         }
-
     }
 }

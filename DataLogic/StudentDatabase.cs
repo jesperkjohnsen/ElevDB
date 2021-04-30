@@ -423,6 +423,20 @@ namespace ElevDB.DataLogic
             sqlConnection.Close();
         }
 
+        public static void EditGrade(Grade grade)
+        {
+            MySqlCommand sqlCommand = new MySqlCommand();
+            sqlCommand.Connection = sqlConnection;
+            sqlCommand.CommandText = "UPDATE Grades SET subjectId = subjectId, gradeValue = @gradeValue, gradeDate = @gradeDate where gradeId = @gradeId";
+            sqlCommand.Parameters.AddWithValue("@subjectId", grade.SubjectId);
+            sqlCommand.Parameters.AddWithValue("@gradeValue", grade.GradeValue);
+            sqlCommand.Parameters.AddWithValue("@gradeDate", grade.GradeDate);
+            sqlCommand.Parameters.AddWithValue("@gradeId", grade.GradeId);
+            sqlConnection.Open();
+            sqlCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
         public static List<Grade> GetGrades(int studentId)
         {
             List<Grade> allGrades = new List<Grade>();

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ElevDB.DataLogic;
 using ElevDB.Models;
 using Microsoft.AspNetCore.Http;
@@ -15,34 +11,29 @@ namespace ElevDB.Pages.Subjects
         [BindProperty]
         public Subject Subject { get; set; }
 
-
         public IActionResult OnGet(int? subjectId)
         {
-            if (HttpContext.Session.GetString("Administration") == "TRUE")
+            if (HttpContext.Session.GetString("Administration") == "TRUE") // Der foretages login tjek
             {
-                if (subjectId.HasValue)
+                if (subjectId.HasValue) // Hvis der kommer et subjectId 
                 {
                     Subject = StudentDatabase.GetSubjectById(subjectId.Value);
                 }
-                else
+                else // Hvis ikke der kom studentId med
                 {
                     Subject = new Subject();
                 }
-                if (Subject == null)
+                if (Subject == null) // Hvis der ikke er noget subject redirectes til notfound.
                 {
                     RedirectToPage("/NotFound");
                 }
-                return Page();
+                return Page(); 
             }
             else
             {
                 return RedirectToPage("./StaffLogin");
             }
-
-
-
         }
-
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
@@ -50,11 +41,11 @@ namespace ElevDB.Pages.Subjects
                 return Page();
             }
 
-            if (Subject.SubjectId > 0)
+            if (Subject.SubjectId > 0) // Hvis subjectId ikke er null og højere end 0, opdateres faget.
             {
                 StudentDatabase.UpdateSubject(Subject);
             }
-            else
+            else // Hvis subjectId ikke er sat oprettes et nyt fag.
             {
                 StudentDatabase.CreateSubject(Subject);
             }

@@ -14,12 +14,9 @@ namespace ElevDB.Pages.Staff
     {
         [BindProperty]
         public Models.Staff LoginStaff { get; set; }
-
         [TempData]
         public string LoginMessage { get; set; }
-
         private Models.Staff staff { get; set; }
-
 
         public void OnGet()
         {
@@ -34,25 +31,22 @@ namespace ElevDB.Pages.Staff
             else
             {                
                 staff = StudentDatabase.Login(LoginStaff.Username,LoginStaff.Password);
-
                 if (staff.staffId != 0)
                 {
-                    if (staff.Administration == true)
+                    if (staff.Administration == true) // hvis brugeren hentet fra SQL er i administration, så sættes det til True i session.
                     {
                         HttpContext.Session.SetString("Administration", "TRUE");
                     }
-                    if (staff.Teacher == true)
+                    if (staff.Teacher == true) // hvis brugeren hentet fra SQL er underviser, så sættes det til True i session.
                     {
                         HttpContext.Session.SetString("Teacher", "TRUE");
                     }
                     HttpContext.Session.SetString("LoggedIn", "TRUE");
-
-                    return RedirectToPage("/Students/StudentList");
+                    return RedirectToPage("/Students/StudentList"); // Efter login foretages redirect til studentlist.
                 }
-
                 else
                 {
-                    TempData["LoginMessage"] = "Invalid login";
+                    TempData["LoginMessage"] = "Invalid login"; // Hvis login fejler, sættes en midlertidig besked som vises på login siden bagefter.
                     return Page();
                 }
 

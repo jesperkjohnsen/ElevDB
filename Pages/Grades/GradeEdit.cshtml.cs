@@ -34,5 +34,18 @@ namespace ElevDB.Pages.Grades
                 return RedirectToPage("./StaffLogin");
             }
         }
+        public IActionResult OnPost()
+        {
+            if (!ModelState.IsValid) // Data valideres, hvis der er fejl så returneres Edit siden
+            {
+                return Page();
+            }
+            else // Hvis data valideres uden fejl gemmes dataen.
+            {
+                StudentDatabase.EditGrade(Grade);
+            }
+            TempData["Message"] = "Grade saved";
+            return RedirectToPage("./GradeList", new { studentId = Grade.StudentId });
+        }
     }
 }

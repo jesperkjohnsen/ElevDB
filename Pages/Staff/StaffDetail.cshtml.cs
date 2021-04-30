@@ -16,13 +16,13 @@ namespace ElevDB.Pages.Staff
 
         public IActionResult OnGet(int staffId)
         {
-            if(HttpContext.Session.GetString("Administration") == "TRUE") { 
-            Staff = StudentDatabase.GetStaffById(staffId);
-            if (Staff == null)
+            if(HttpContext.Session.GetString("Administration") == "TRUE") { // Der foretages login tjek
+            Staff = StudentDatabase.GetStaffById(staffId); // Staff hentes fra databasen
+            if (Staff == null) // Hvis der ikke kunne findes en ansat redirectes man tilbage til stafflist.
             {
                 return RedirectToPage("./StaffList");
                 }
-                else { 
+            else { // Hvis der blev fundet en ansat vises detail siden.
                     return Page();
                 }
             }

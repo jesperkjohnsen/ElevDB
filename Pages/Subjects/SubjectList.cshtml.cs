@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ElevDB.DataLogic;
@@ -19,17 +16,15 @@ namespace ElevDB.Pages.Subjects
 
         public IActionResult OnGet()
         {
-            if (HttpContext.Session.GetString("Administration") == "TRUE")
+            if (HttpContext.Session.GetString("Administration") == "TRUE") // Login tjek
             {
-                Subjects = StudentDatabase.GetSubjects(SearchTerm);
+                Subjects = StudentDatabase.GetSubjects(SearchTerm); // 
                 return Page();
             }
             else
             {
-                return RedirectToPage("./StaffLogin");
-            }
-            
-            
+                return RedirectToPage("/Staff/StaffLogin");
+            }            
         }
     }
 }
