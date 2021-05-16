@@ -261,7 +261,7 @@ namespace ElevDB.DataLogic
         public static void CreateStaff(Staff staff)
         {
             MySqlCommand sqlCommand = new MySqlCommand();
-            sqlCommand.CommandText = "INSERT INTO Students (firstName,lastName,email,teacher,administration,username,password) VALUES(" +
+            sqlCommand.CommandText = "INSERT INTO Staff (firstName,lastName,email,teacher,administration,username,password) VALUES(" +
                 "@firstName,@lastName,@email,@teacher,@administration,@username,@password)";
             sqlCommand.Parameters.AddWithValue("@firstName", staff.FirstName);
             sqlCommand.Parameters.AddWithValue("@lastName", staff.LastName);
